@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Додзё Медиа — Цифровое ремесло. Измеримый результат.</title>
+<meta name="description" content="Собираем сайты, поиск и рекламу в единую систему. Помогаем амбициозным брендам расти.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400&family=Oranienbaum&display=swap" rel="stylesheet">
+<!--
+ДОПУЩЕНИЯ (чего не было в макете Figma и как решено):
+1. Макет «DOJO · Тестовое / 3 часа»: десктоп 1440 (559:95), мобильный 390 (559:143), меню открыто (559:187),
+   состояния кнопки и карточки (559:51). Планшетного фрейма НЕТ: на ≤1024px используются десктопные размеры
+   с боковым отступом 40px, H1 56/60, H2 40/44, гамбургер; на ≤768px — значения мобильного макета (H1 44/48, H2 32/36, отступ 20px, карточки в 1 колонку).
+2. Иконки гамбургера (три линии) и закрытия (крест) — только как слоты 20×20; сама графика гамбургера в макете не отрисована,
+   нарисована inline-SVG линией 1.5px цвета ink. Крест — по смыслу кадра 559:190.
+3. В макете НЕТ форм. Чтобы выполнить требование «демо-форма с валидацией» без изменения видимого дизайна, кнопки
+   «Обсудить проект →» открывают скрытое по умолчанию модальное окно (<dialog>) с формой: имя, email, сообщение.
+   Стили формы собраны из токенов макета (бордер line, радиус 0, кнопка accent, без теней). Подложка модального окна — rgba(33,27,24,.4) (в макете не задана).
+   Отправка — демо, без сервера.
+4. Ссылки карточек проектов: страниц проектов в макете нет, href="#"; переход отключён скриптом.
+5. Изображения: временные URL Figma действуют 7 дней. Скачайте файлы и замените src на локальные (assets/...).
+   Среда не позволила скачать/встроить их: сеть недоступна.
+6. Шрифты Oranienbaum и Manrope (Regular) подключаются через Google Fonts (единственный внешний ресурс), запасные: Georgia / system-ui.
+7. Мобильный футер: кнопка идёт сразу под email (gap 0), как в макете.
+8. Hover ссылок навигации и email — подчёркивание, focus-visible — outline 2px accent, offset 3px (по заметкам макета).
+-->
+<style>
+:root {
+  /* colors */
+  --paper: #f1ede2;
+  --ink: #211b18;
+  --muted: #655b54;
+  --line: #c7beb2;
+  --accent: #302038;
+  --white: #ffffff;
+  --hover: #e9e3d6;
+  --hero-line: rgba(106, 92, 82, .55);
+  --backdrop: rgba(33, 27, 24, .4);
+  --error: #8a2a1f;
+  /* font families */
+  --font-serif: "Oranienbaum", Georgia, "Times New Roman", serif;
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  /* font sizes / line heights */
+  --fs-label: 12px;  --lh-label: 18px;
+  --fs-small: 14px;  --lh-small: 22px;
+  --lh-button: 20px;
+  --fs-body: 16px;   --lh-body: 26px;
+  --fs-card: 28px;   --lh-card: 32px;
+  --fs-wordmark: 32px; --lh-wordmark: 36px;
+  --fs-h2: 48px;     --lh-h2: 52px;
+  --fs-h1: 72px;     --lh-h1: 76px;
+  /* spacing */
+  --sp-3: 3px; --sp-8: 8px; --sp-12: 12px; --sp-16: 16px; --sp-20: 20px;
+  --sp-24: 24px; --sp-32: 32px; --sp-40: 40px; --sp-48: 48px; --sp-64: 64px;
+  --container: 1200px;
+  --page-pad: max(var(--sp-40), calc((100% - var(--container)) / 2));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ul { margin: 0; padding: 0; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: var(--sp-3); }
+
+.page { padding-inline: var(--page-pad); }
+.label {
+  font-size: var(--fs-label); line-height: var(--lh-label);
+  letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+}
+
+/* ---------- Button ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 48px; min-height: 48px; min-width: 218px; padding: 14px var(--sp-20);
+  background: var(--accent); color: var(--white); border: 0; border-radius: 0;
+  font-size: var(--fs-small); line-height: var(--lh-button);
+  white-space: nowrap; cursor: pointer; transition: background-color .2s ease;
+}
+.btn:hover { background: var(--ink); }
+
+/* ---------- Header ---------- */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-block: var(--sp-24); border-bottom: 1px solid var(--line);
+}
+.header__bar, .nav { display: contents; }
+.header__brand {
+  font-family: var(--font-serif); font-size: var(--fs-wordmark);
+  line-height: var(--lh-wordmark); white-space: nowrap;
+}
+.header__burger { display: none; }
+.nav__list { display: flex; align-items: center; gap: var(--sp-32); }
+.nav__link { display: block; white-space: nowrap; }
+.nav__link:hover, .footer__email:hover { text-decoration: underline; }
+
+.burger {
+  width: 44px; height: 44px; padding: 0; background: transparent;
+  border: 1px solid var(--line); border-radius: 0; cursor: pointer;
+  align-items: center; justify-content: center;
+}
+.burger__icon { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.burger__icon--close { display: none; }
+.burger[aria-expanded="true"] .burger__icon--menu { display: none; }
+.burger[aria-expanded="true"] .burger__icon--close { display: block; }
+
+/* ---------- Hero ---------- */
+.hero { display: flex; flex-direction: column; gap: var(--sp-24); padding-block: var(--sp-48) var(--sp-64); }
+.hero__intro { display: grid; grid-template-columns: 1fr 384px; column-gap: var(--sp-48); align-items: end; }
+.hero__title { font-family: var(--font-serif); font-weight: 400; font-size: var(--fs-h1); line-height: var(--lh-h1); }
+.hero__title span { display: block; }
+.hero__desc { display: flex; flex-direction: column; gap: var(--sp-16); color: var(--muted); }
+.hero__lead { font-size: var(--fs-body); line-height: var(--lh-body); }
+.hero__media {
+  height: 482px; border-block: .7px solid var(--hero-line); overflow: hidden;
+}
+.hero__img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Projects ---------- */
+.projects { border-top: 1px solid var(--line); padding-block: var(--sp-48) var(--sp-64); display: flex; flex-direction: column; gap: var(--sp-32); }
+.projects__head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-16); }
+.projects__title, .contact__title {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: var(--fs-h2); line-height: var(--lh-h2);
+}
+.projects__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-24); }
+
+.card {
+  display: flex; flex-direction: column; gap: var(--sp-12); padding: var(--sp-16);
+  border: 1px solid var(--line); transition: background-color .2s ease;
+}
+.card:hover { background: var(--hover); }
+.card__media { aspect-ratio: 16 / 10; overflow: hidden; }
+.card__img { width: 100%; height: 100%; object-fit: cover; }
+.card__title { font-family: var(--font-serif); font-weight: 400; font-size: var(--fs-card); line-height: var(--lh-card); }
+.card__tags { color: var(--muted); }
+.card__more { color: var(--ink); }
+
+/* ---------- Footer ---------- */
+.footer { border-top: 1px solid var(--line); padding-block: var(--sp-48) var(--sp-24); display: flex; flex-direction: column; gap: var(--sp-24); }
+.contact { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-24); }
+.contact__copy { display: flex; flex-direction: column; gap: var(--sp-12); max-width: 800px; }
+.footer__email { color: var(--muted); align-self: flex-start; }
+.footer__bottom { display: flex; justify-content: space-between; color: var(--muted); }
+
+/* ---------- Demo dialog / form ---------- */
+.dialog {
+  width: min(480px, calc(100% - 40px)); padding: var(--sp-32);
+  background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 0;
+}
+.dialog::backdrop { background: var(--backdrop); }
+.dialog__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-16); margin-bottom: var(--sp-24); }
+.dialog__title { font-family: var(--font-serif); font-weight: 400; font-size: var(--fs-card); line-height: var(--lh-card); }
+.dialog .burger { display: inline-flex; flex: none; }
+.dialog .burger__icon--close { display: block; }
+.form { display: flex; flex-direction: column; gap: var(--sp-16); }
+.form__field { display: flex; flex-direction: column; gap: 6px; }
+.form__label { color: var(--muted); }
+.form__control {
+  width: 100%; min-height: 48px; padding: 12px var(--sp-16); background: var(--paper);
+  border: 1px solid var(--line); border-radius: 0; font-size: var(--fs-small); line-height: var(--lh-small);
+}
+.form__control--area { min-height: 112px; resize: vertical; }
+.form__control[aria-invalid="true"] { border-color: var(--error); }
+.form__error { min-height: 18px; font-size: var(--fs-label); line-height: var(--lh-label); color: var(--error); }
+.form__success { color: var(--muted); }
+.form .btn { width: 100%; }
+[hidden] { display: none !important; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  :root { --fs-h1: 56px; --lh-h1: 60px; --fs-h2: 40px; --lh-h2: 44px; }
+  .header { display: block; padding-block: 0; border-bottom: 0; }
+  .header__bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-block: var(--sp-24); border-bottom: 1px solid var(--line);
+  }
+  .header__burger { display: inline-flex; }
+  .nav {
+    display: grid; grid-template-rows: 0fr; visibility: hidden;
+    transition: grid-template-rows .3s ease, visibility 0s linear .3s;
+  }
+  .nav.is-open { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .3s ease, visibility 0s; }
+  .nav__inner { overflow: hidden; min-height: 0; }
+  .nav__list { flex-direction: column; align-items: stretch; gap: 0; padding-top: var(--sp-12); }
+  .nav__link { padding: var(--sp-12); }
+  .nav .btn { width: 100%; }
+  .nav__cta-wrap { padding-bottom: var(--sp-24); }
+  .hero__intro { grid-template-columns: 1fr; row-gap: var(--sp-24); }
+  .hero__desc { max-width: 384px; }
+}
+@media (min-width: 1025px) {
+  .nav__inner { display: contents; }
+  .nav__cta-wrap { display: contents; }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 768px) {
+  :root { --fs-h1: 44px; --lh-h1: 48px; --fs-h2: 32px; --lh-h2: 36px; --page-pad: var(--sp-20); }
+  .header__bar { padding-block: var(--sp-24); }
+  .hero { gap: var(--sp-20); padding-block: var(--sp-32) var(--sp-40); }
+  .hero__intro { row-gap: var(--sp-20); }
+  .hero__desc { max-width: none; }
+  .hero__media { height: 210px; }
+  .projects { padding-block: var(--sp-40) var(--sp-48); gap: var(--sp-24); }
+  .projects__head { flex-direction: column; align-items: flex-start; gap: var(--sp-8); }
+  .projects__grid { grid-template-columns: 1fr; gap: var(--sp-16); }
+  .footer { padding-block: var(--sp-32) var(--sp-24); }
+  .contact { flex-direction: column; align-items: stretch; gap: 0; }
+  .contact .btn { width: 100%; }
+  .footer__bottom { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav, .btn, .card { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="header">
+    <div class="header__bar">
+      <a class="header__brand" href="#top">Додзё Медиа</a>
+      <button class="burger header__burger" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню" data-menu-toggle>
+        <svg class="burger__icon burger__icon--menu" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 5h16M2 10h16M2 15h16"/></svg>
+        <svg class="burger__icon burger__icon--close" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg>
+      </button>
+    </div>
+    <nav class="nav" id="site-nav" aria-label="Основная навигация">
+      <div class="nav__inner">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#projects">Проекты</a></li>
+          <li><a class="nav__link" href="#approach">Подход</a></li>
+          <li><a class="nav__link" href="#contacts">Контакты</a></li>
+        </ul>
+        <div class="nav__cta-wrap"><button class="btn" type="button" data-open-dialog>Обсудить проект →</button></div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="approach" aria-labelledby="hero-title">
+      <p class="label">Сайты · Поиск · Смысл</p>
+      <div class="hero__intro">
+        <h1 class="hero__title" id="hero-title"><span>Цифровое ремесло.</span><span>Измеримый результат.</span></h1>
+        <div class="hero__desc">
+          <p class="hero__lead">Собираем сайты, поиск и рекламу в единую систему. Помогаем амбициозным брендам расти.</p>
+          <p class="label">Из Ярославля — в любую точку мира</p>
+        </div>
+      </div>
+      <div class="hero__media">
+        <img class="hero__img" src="img/da5f2.png" width="1200" height="482" alt="Мастера эпохи Возрождения за общим столом работают с ноутбуком, планшетами, книгами и свитками">
+      </div>
+    </section>
+
+    <section class="projects" id="projects" aria-labelledby="projects-title">
+      <div class="projects__head">
+        <h2 class="projects__title" id="projects-title">Избранные работы</h2>
+        <p class="label">Три проекта. Три истории.</p>
+      </div>
+      <div class="projects__grid">
+        <a class="card" href="#">
+          <div class="card__media"><img class="card__img" src="img/60a7d.png" width="352" height="220" alt="Чёрная визитка с надписью BRISKLY на фоне тёмных осенних листьев" loading="lazy"></div>
+          <h3 class="card__title">БРИСКЛИ</h3>
+          <p class="card__tags">Сайт · Брендинг · Реклама</p>
+          <p class="card__more">Смотреть проект →</p>
+        </a>
+        <a class="card" href="#">
+          <div class="card__media"><img class="card__img" src="img/119f0.jpg" width="352" height="220" alt="Грузовое судно у причала порта с кранами и контейнерами" loading="lazy"></div>
+          <h3 class="card__title">ТРЕЙД ОВЕРСИЗ</h3>
+          <p class="card__tags">Сайт · Стратегия · Реклама</p>
+          <p class="card__more">Смотреть проект →</p>
+        </a>
+        <a class="card" href="#">
+          <div class="card__media"><img class="card__img" src="img/fe13b.jpg" width="352" height="220" alt="Фасад здания Гостиного двора с рядами арочных окон" loading="lazy"></div>
+          <h3 class="card__title">ГОСТИНЫЙ ДВОР</h3>
+          <p class="card__tags">Сайт · Брендинг · Стратегия</p>
+          <p class="card__more">Смотреть проект →</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contacts">
+    <div class="contact">
+      <div class="contact__copy">
+        <h2 class="contact__title">Начнём с вашей идеи.</h2>
+        <a class="footer__email" href="mailto:hello@dojo-media.com">hello@dojo-media.com</a>
+      </div>
+      <button class="btn" type="button" data-open-dialog>Обсудить проект →</button>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 Додзё Медиа</p>
+      <p>Мастерство начинается с деталей.</p>
+    </div>
+  </footer>
+</div>
+
+<dialog class="dialog" id="contact-dialog" aria-labelledby="dialog-title">
+  <div class="dialog__head">
+    <h2 class="dialog__title" id="dialog-title">Обсудить проект</h2>
+    <button class="burger" type="button" aria-label="Закрыть" data-close-dialog>
+      <svg class="burger__icon burger__icon--close" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg>
+    </button>
+  </div>
+  <form class="form" id="contact-form" novalidate>
+    <div class="form__field">
+      <label class="form__label label" for="f-name">Имя</label>
+      <input class="form__control" id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+      <p class="form__error" id="e-name" aria-live="polite"></p>
+    </div>
+    <div class="form__field">
+      <label class="form__label label" for="f-email">Email</label>
+      <input class="form__control" id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="e-email">
+      <p class="form__error" id="e-email" aria-live="polite"></p>
+    </div>
+    <div class="form__field">
+      <label class="form__label label" for="f-msg">О проекте</label>
+      <textarea class="form__control form__control--area" id="f-msg" name="message" required aria-describedby="e-msg"></textarea>
+      <p class="form__error" id="e-msg" aria-live="polite"></p>
+    </div>
+    <button class="btn" type="submit">Отправить →</button>
+    <p class="form__success" id="form-success" role="status" hidden>Спасибо! Заявка отправлена (демо, данные никуда не передаются).</p>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  var mq = window.matchMedia('(max-width: 1024px)');
+  var toggle = document.querySelector('[data-menu-toggle]');
+  var nav = document.getElementById('site-nav');
+
+  function setMenu(open) {
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    nav.classList.toggle('is-open', open);
+  }
+  toggle.addEventListener('click', function () {
+    setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.closest('a') && mq.matches) setMenu(false);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setMenu(false); toggle.focus(); }
+  });
+  mq.addEventListener('change', function () { setMenu(false); });
+
+  document.querySelectorAll('a.card[href="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); });
+  });
+
+  /* Demo dialog + validation */
+  var dialog = document.getElementById('contact-dialog');
+  var form = document.getElementById('contact-form');
+  var success = document.getElementById('form-success');
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  document.querySelectorAll('[data-open-dialog]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (mq.matches) setMenu(false);
+      success.hidden = true;
+      dialog.showModal();
+    });
+  });
+  dialog.querySelector('[data-close-dialog]').addEventListener('click', function () { dialog.close(); });
+  dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
+
+  function check(field) {
+    var v = field.value.trim(), msg = '';
+    if (!v) msg = 'Заполните это поле';
+    else if (field.name === 'name' && v.length < 2) msg = 'Минимум 2 символа';
+    else if (field.name === 'email' && !emailRe.test(v)) msg = 'Введите корректный email';
+    else if (field.name === 'message' && v.length < 10) msg = 'Минимум 10 символов';
+    document.getElementById(field.getAttribute('aria-describedby')).textContent = msg;
+    field.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    return !msg;
+  }
+  var fields = Array.prototype.slice.call(form.querySelectorAll('.form__control'));
+  fields.forEach(function (f) {
+    f.addEventListener('blur', function () { check(f); });
+    f.addEventListener('input', function () { if (f.getAttribute('aria-invalid') === 'true') check(f); });
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = fields.filter(function (f) { return !check(f); });
+    if (bad.length) { bad[0].focus(); return; }
+    form.reset();
+    success.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

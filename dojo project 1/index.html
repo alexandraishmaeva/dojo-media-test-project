@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EUROKAPPA — Стоматологическая клиника</title>
+<meta name="description" content="Стоматологическая клиника EUROKAPPA: элайнеры, имплантация, брекеты и другие услуги. Запишитесь на бесплатную консультацию.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* =========================================================================
+     ДИЗАЙН-ТОКЕНЫ
+     ========================================================================= */
+  :root {
+    color-scheme: light;
+    --color-bg: #FFFFFF;
+    --color-navy: #223959;
+    --color-white: #FFFFFF;
+    --color-input-bg: #F4F7FC;
+    --color-muted: #92A1BC;
+    --color-mint: #38BFC4;
+    --color-mint-light: #55D6DA;
+    --color-paragraph-light: #B4D1FF;
+    --color-border-soft: rgba(255,255,255,.2);
+    --color-ink: #0F1626;
+    --color-ink-soft: #15202F;
+    --color-overlay-start: rgba(13, 18, 30, 0);
+    --color-overlay-end: rgba(10, 14, 23, .86);
+    --color-chip-bg-start: #3D4553;
+    --color-chip-bg-end: #26283A;
+    --color-error: #E25757;
+    --color-success: #2E9E6B;
+
+    --font-base: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    --fs-h1: 32px;
+    --fs-h1-mobile: 28px;
+    --fs-h2-booking: 22px;
+    --fs-h2-booking-mobile: 20px;
+    --fs-body: 16px;
+    --fs-small: 14px;
+    --fs-xs: 12px;
+    --fs-xxs: 10px;
+
+    /* Отступы контейнера */
+    --container-padding: 120px;
+    --container-max: 1440px;
+
+    --radius-card: 24px;
+    --radius-card-mobile: 10px;
+    --radius-input: 10px;
+    --radius-pill: 40px;
+    --radius-chip: 20px;
+    --radius-booking: 40px;
+    --radius-booking-mobile: 28px;
+
+    --shadow-hover: 0 20px 40px rgba(16, 24, 40, .16);
+    --shadow-header: 0 1px 0 rgba(34, 57, 89, .08);
+
+    --transition-base: .2s ease;
+    --transition-nav: .32s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* =========================================================================
+     RESET / BASE
+     ========================================================================= */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body, h1, h2, h3, p, figure, ul { margin: 0; }
+  ul { list-style: none; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  input { font: inherit; color: inherit; }
+
+  body {
+    font-family: var(--font-base);
+    background: var(--color-bg);
+    color: var(--color-navy);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mint);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 12px; top: -48px;
+    background: var(--color-navy);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    z-index: 200;
+    transition: top var(--transition-base);
+  }
+  .skip-link:focus { top: 12px; }
+
+  /* =============================================
+     ИСПРАВЛЕНИЕ: Контейнер теперь всегда имеет
+     паддинги, даже если ширина экрана меньше max-width
+     ============================================= */
+  .container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  /* =========================================================================
+     HEADER / NAV
+     ========================================================================= */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-bg);
+    box-shadow: var(--shadow-header);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 18px;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--color-navy);
+    flex-shrink: 0;
+  }
+
+  .header__logo-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(160deg, var(--color-mint) 0%, #2a8fa0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .nav {
+    display: flex;
+  }
+
+  /* Мобильная панель меню: на десктопе скрыта */
+  .header__nav-panel { display: none; }
+
+  .nav__list {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav__link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-navy);
+    padding: 8px 2px;
+    position: relative;
+    transition: color var(--transition-base);
+  }
+
+  .nav__link::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 2px;
+    background: var(--color-mint);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+  }
+
+  .nav__link:hover { color: var(--color-mint); }
+  .nav__link:hover::after,
+  .nav__link:focus-visible::after { transform: scaleX(1); }
+  .nav__link[aria-current="page"] { color: var(--color-mint); }
+
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .header__phone {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color var(--transition-base);
+  }
+  .header__phone:hover { color: var(--color-mint); }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .button--accent {
+    background: var(--color-mint);
+    color: #fff;
+    border: 1px solid var(--color-border-soft);
+    padding: 12px 20px;
+    font-size: var(--fs-small);
+  }
+  .button--accent:hover { background: #30a9ad; box-shadow: var(--shadow-hover); }
+  .button--accent:active { transform: scale(.98); }
+  .button--accent:disabled { background: var(--color-muted); cursor: not-allowed; box-shadow: none; }
+
+  .header__cta { padding: 10px 20px; font-size: 13px; }
+
+  .header__burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .header__burger:hover { background: var(--color-input-bg); }
+
+  .header__burger-box {
+    width: 22px;
+    height: 16px;
+    position: relative;
+  }
+  .header__burger-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-navy);
+    transition: transform var(--transition-nav), opacity var(--transition-nav), top var(--transition-nav);
+  }
+  .header__burger-line:nth-child(1) { top: 0; }
+  .header__burger-line:nth-child(2) { top: 7px; }
+  .header__burger-line:nth-child(3) { top: 14px; }
+
+  .header__burger[aria-expanded="true"] .header__burger-line:nth-child(1) {
+    top: 7px; transform: rotate(45deg);
+  }
+  .header__burger[aria-expanded="true"] .header__burger-line:nth-child(2) {
+    opacity: 0;
+  }
+  .header__burger[aria-expanded="true"] .header__burger-line:nth-child(3) {
+    top: 7px; transform: rotate(-45deg);
+  }
+
+  /* =========================================================================
+     MAIN / SECTIONS COMMON
+     ========================================================================= */
+  main { overflow-x: clip; }
+  .section { padding-block: 50px; }
+
+  /* =========================================================================
+     SERVICES
+     ========================================================================= */
+  .services__title {
+    font-size: var(--fs-h1);
+    font-weight: 600;
+    color: var(--color-navy);
+    line-height: normal;
+    margin-bottom: 40px;
+  }
+
+  .services__track {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 6px;
+    /* Трек на всю ширину экрана, но первая карточка выровнена по контейнеру */
+    padding-inline: max(var(--container-padding), calc((100% - var(--container-max)) / 2 + var(--container-padding)));
+    scroll-padding-inline: max(var(--container-padding), calc((100% - var(--container-max)) / 2 + var(--container-padding)));
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+  .services__track::-webkit-scrollbar { height: 6px; }
+  .services__track::-webkit-scrollbar-thumb { background: var(--color-muted); border-radius: 4px; }
+
+  .service-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: 384px;
+    height: 384px;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    isolation: isolate;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .service-card:hover,
+  .service-card:focus-within {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .service-card__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(160deg, #263750 0%, var(--color-ink) 100%);
+  }
+  .service-card__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+  }
+
+
+  .service-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, var(--color-overlay-end) 0%, var(--color-overlay-start) 65%);
+  }
+
+  .service-card__title {
+    color: #fff;
+    font-size: var(--fs-h1);
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 56px;
+    max-width: 90%;
+  }
+
+  /* Вырез в правом нижнем углу карточки: «Консультация» и стрелка лежат на фоне страницы */
+  .service-card__footer {
+    --notch-r: 20px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 10px 0 0 10px;
+    background: var(--color-bg);
+    border-top-left-radius: var(--notch-r);
+  }
+  .service-card__footer::before,
+  .service-card__footer::after {
+    content: "";
+    position: absolute;
+    width: var(--notch-r);
+    height: var(--notch-r);
+    background: radial-gradient(circle at 0 0, transparent var(--notch-r), var(--color-bg) calc(var(--notch-r) + .5px));
+    pointer-events: none;
+  }
+  .service-card__footer::before { left: calc(var(--notch-r) * -1); bottom: 0; }
+  .service-card__footer::after { right: 0; top: calc(var(--notch-r) * -1); }
+
+  .service-card__chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 32px;
+    border-radius: var(--radius-chip);
+    background: radial-gradient(120% 160% at 50% 0%, var(--color-chip-bg-start) 0%, var(--color-chip-bg-end) 100%);
+    color: #fff;
+    font-size: var(--fs-body);
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    transition: filter var(--transition-base);
+  }
+  .service-card__chip:hover { filter: brightness(1.15); }
+
+  .service-card__arrow {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: radial-gradient(120% 160% at 50% 0%, var(--color-chip-bg-start) 0%, var(--color-chip-bg-end) 100%);
+    border: 1px solid rgba(255,255,255,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-base), background var(--transition-base);
+  }
+  .service-card__arrow svg { width: 16px; height: 16px; }
+  .service-card__arrow:hover { transform: translateX(3px); background: var(--color-mint); }
+
+  /* =========================================================================
+     BOOKING
+     ========================================================================= */
+  .booking__panel {
+    position: relative;
+    border-radius: var(--radius-booking);
+    overflow: hidden;
+    background: linear-gradient(125deg, #0F1E45 0%, #1C3C78 45%, #2E5AA8 75%, #3669B8 100%);
+    display: grid;
+    grid-template-columns: minmax(260px, 420px) 1fr;
+    align-items: stretch;
+    min-height: 323px;
+  }
+
+  .booking__panel::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 72px; height: 72px;
+    background: var(--color-bg);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+
+  .booking__visual {
+    position: relative;
+    min-height: 260px;
+  }
+  .booking__visual img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 92%;
+    object-fit: cover;
+    object-position: top center;
+    -webkit-mask-image: radial-gradient(ellipse 92% 100% at 38% 100%, #000 62%, transparent 100%);
+            mask-image: radial-gradient(ellipse 92% 100% at 38% 100%, #000 62%, transparent 100%);
+  }
+
+  .booking__content {
+    padding: 40px 56px 40px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+    justify-content: center;
+  }
+
+  .booking__heading {
+    color: #fff;
+    font-size: var(--fs-h2-booking);
+    font-weight: 600;
+    line-height: normal;
+    max-width: 541px;
+  }
+
+  .booking__text {
+    color: var(--color-paragraph-light);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    line-height: 1.4;
+    max-width: 666px;
+  }
+
+  .booking-form { display: flex; flex-direction: column; gap: 21px; }
+
+  .booking-form__fields {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px 30px;
+  }
+
+  .booking-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 240px;
+    max-width: 100%;
+  }
+
+  .booking-form__label {
+    color: #fff;
+    font-size: var(--fs-xxs);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .booking-form__input {
+    height: 40px;
+    width: 100%;
+    padding: 10px;
+    border-radius: var(--radius-input);
+    background: var(--color-input-bg);
+    border: 1px solid #fff;
+    color: var(--color-navy);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  }
+  .booking-form__input::placeholder { color: var(--color-muted); }
+  .booking-form__input:hover { border-color: var(--color-mint); }
+  .booking-form__input:focus-visible {
+    outline: none;
+    border-color: var(--color-mint);
+    box-shadow: 0 0 0 3px rgba(56,191,196,.3);
+  }
+  .booking-form__input[aria-invalid="true"] {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(226,87,87,.2);
+  }
+
+  .booking-form__error {
+    display: none;
+    color: #FFD9D9;
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .booking-form__field--invalid .booking-form__error { display: block; }
+
+  .booking-form__submit { flex-shrink: 0; }
+
+  .booking-form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    cursor: pointer;
+    width: fit-content;
+  }
+
+  .booking-form__checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border-radius: 6px;
+    border: 1.5px solid #fff;
+    background: transparent;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: border-color var(--transition-base), background var(--transition-base);
+  }
+  .booking-form__checkbox::after {
+    content: "";
+    width: 11px;
+    height: 8px;
+    clip-path: polygon(10% 45%, 40% 70%, 90% 10%, 100% 20%, 42% 90%, 0 55%);
+    background: var(--color-navy);
+    transform: scale(0);
+    transition: transform .15s ease;
+  }
+  .booking-form__checkbox:checked {
+    background: var(--color-mint-light);
+    border-color: var(--color-mint-light);
+  }
+  .booking-form__checkbox:checked::after { transform: scale(1); }
+  .booking-form__checkbox[aria-invalid="true"] { border-color: var(--color-error); }
+
+  .booking-form__consent-text {
+    color: #fff;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .booking-form__consent-text a {
+    font-weight: 700;
+    color: var(--color-mint-light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .booking-form__consent-text a:hover { color: #fff; }
+
+  .booking-form__success {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+  }
+  .booking-form__success.is-visible { display: flex; flex-wrap: wrap; }
+  .booking-form__reset {
+    margin-left: auto;
+    color: var(--color-mint-light);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .booking-form__reset:hover { color: #fff; }
+  .booking-form.is-loading .button { opacity: .7; pointer-events: none; }
+
+  .booking__bg { display: none; }
+
+  /* =========================================================================
+     ДЕСКТОП ≥1025px — значения из макета Figma «Форма записи» (кадр 1199×323)
+     ========================================================================= */
+  @media (min-width: 1025px) {
+    .booking__panel {
+      /* Панель не обрезает содержимое — голова девушки выходит за верхний край.
+         Фон, скругления и свечение лежат в .booking__bg, который обрезается сам. */
+      overflow: visible;
+      background: none;
+      isolation: isolate;
+      min-height: 323px;
+      /* текст начинается на x=415 из 1199 (34,6%) */
+      grid-template-columns: minmax(400px, 34.6%) 1fr;
+    }
+    .booking__panel::after { display: none; }
+
+    /* Vector 25 (контур + градиент) и свечение — один SVG, растягивается на панель */
+    .booking__bg {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+    .booking__bg svg { display: block; width: 100%; height: 100%; }
+    /* Контур панели из SVG уже содержит выемки — белый треугольник не нужен */
+    .booking__panel::before { display: none; }
+
+    /* «Модель 89»: 357×353, left 32.5, нижний край панели → голова выходит на 30px */
+    .booking__visual { z-index: 1; min-height: 0; }
+    .booking__visual img {
+      left: 32.5px;
+      bottom: 0;
+      width: 357px;
+      height: 353px;
+      max-width: none;
+      object-fit: contain;
+      object-position: left bottom;
+      -webkit-mask-image: none;
+              mask-image: none;
+    }
+
+    /* Frame 550: отступ сверху 60,5, снизу 37,5; gap 21 */
+    .booking__content {
+      position: relative;
+      z-index: 2;
+      justify-content: flex-start;
+      gap: 21px;
+      padding: 60px 40px 38px 0;
+    }
+    .booking__heading { font-size: 22px; line-height: 27px; max-width: 541px; }
+    .booking__text { font-size: 12px; line-height: 15px; max-width: 666px; }
+
+    .booking-form { gap: 21px; }
+
+    /* Поля 240×40 с зазором 10px, до кнопки 30px (10 + 20) */
+    .booking-form__fields { gap: 10px; align-items: flex-end; }
+    .booking-form__field { flex: 0 1 240px; width: 240px; }
+    .booking-form__label { font-size: 10px; line-height: 12px; }
+    .booking-form__input { height: 40px; font-size: 12px; line-height: 15px; }
+    .booking-form__submit .button {
+      height: 44px;
+      padding: 12px 20px;
+      gap: 15px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    /* Frame 732: чекбокс 20×20, тёмная подложка rgba(0,0,0,.2), радиус 5, белая галочка */
+    .booking-form__consent { align-items: center; gap: 11px; }
+    .booking-form__consent-text { font-size: 12px; line-height: 1.4; }
+    .booking-form__checkbox {
+      margin-top: 0;
+      border: 0;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, .2);
+      /* в макете состояние «без галочки» не нарисовано — добавлена тонкая обводка */
+      box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .7);
+    }
+    .booking-form__checkbox::after { width: 10px; height: 9px; background: #fff; }
+    .booking-form__checkbox:checked {
+      background: rgba(0, 0, 0, .2);
+      border-color: transparent;
+      box-shadow: none;
+    }
+    .booking-form__checkbox[aria-invalid="true"] { box-shadow: inset 0 0 0 1.5px var(--color-error); }
+  }
+  @media (min-width: 1361px) {
+    .booking-form__submit { margin-left: 20px; }
+  }
+  .booking-form.is-sent .booking-form__fields,
+  .booking-form.is-sent .booking-form__consent { display: none; }
+
+  /* =========================================================================
+     FOOTER
+     ========================================================================= */
+  .footer {
+    background: var(--color-ink-soft);
+    color: #fff;
+    margin-top: 60px;
+  }
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+    padding-block: 48px 32px;
+  }
+  .footer__brand { max-width: 320px; display: flex; flex-direction: column; gap: 14px; }
+  .footer__logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18px; }
+  .footer__tagline { color: #9FB0C9; font-size: 13px; line-height: 1.5; }
+
+  .footer__nav { display: flex; flex-wrap: wrap; gap: 48px; }
+  .footer__nav-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 14px; }
+  .footer__nav-list { display: flex; flex-direction: column; gap: 10px; }
+  .footer__nav-link { font-size: 13px; color: #9FB0C9; transition: color var(--transition-base); }
+  .footer__nav-link:hover { color: var(--color-mint-light); }
+
+  .footer__bottom {
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding-block: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #7D8CA6;
+  }
+
+  /* =========================================================================
+     ПЛАНШЕТ ≤1024px
+     ========================================================================= */
+  @media (max-width: 1024px) {
+    :root {
+      --container-padding: 48px;
+      --fs-h1: 30px;
+    }
+
+    .nav { display: none; }
+    .header__phone { display: none; }
+    .header__burger { display: flex; }
+
+    .header__nav-panel {
+      position: fixed;
+      inset: 0;
+      top: 0;
+      background: var(--color-bg);
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      padding: 96px 32px 32px;
+      gap: 32px;
+      display: flex;
+      transform: translateX(100%);
+      transition: transform var(--transition-nav);
+      overflow-y: auto;
+    }
+    .header__nav-panel.is-open { transform: translateX(0); }
+
+    .header__nav-panel .nav { display: block; }
+    .header__nav-panel .nav__list { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .header__nav-panel .nav__link { font-size: 20px; }
+    .header__nav-panel .header__cta { margin-top: 12px; width: 100%; padding-block: 14px; }
+
+    .header__backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,22,38,.45);
+      z-index: 140;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-nav);
+    }
+    .header__backdrop.is-open { opacity: 1; pointer-events: auto; }
+
+    .service-card { width: 300px; height: 300px; padding: 26px; border-radius: 20px; }
+    .service-card__title { font-size: 26px; margin-bottom: 46px; }
+    .service-card__footer { gap: 8px; }
+    .service-card__chip { padding: 9px 24px; font-size: 14px; }
+    .service-card__arrow { width: 36px; height: 36px; }
+
+    .booking__panel { grid-template-columns: 1fr; }
+    .booking__visual { min-height: 220px; }
+    .booking__visual img { height: 100%; }
+    .booking__content { padding: 32px; }
+  }
+
+  /* =========================================================================
+     МОБИЛЬНАЯ ВЕРСИЯ ≤768px
+     ========================================================================= */
+  @media (max-width: 768px) {
+    :root {
+      --container-padding: 20px;
+      --fs-h1: var(--fs-h1-mobile);
+    }
+
+    .section { padding-block: 32px; }
+
+    .header__inner { padding-block: 14px; }
+    .header__logo-text { font-size: 16px; }
+    /* Кнопка «Записаться» есть в выезжающем меню — в шапке на 390px она не помещается */
+    .header__actions > .header__cta { display: none; }
+
+    .services__title { margin-bottom: 24px; }
+
+    body { background: var(--color-input-bg); }
+    .services__track { gap: 10px; }
+
+    /* Карточка: картинка с названием сверху, «Консультация» + стрелка — под ней */
+    .service-card {
+      width: 150px;
+      height: auto;
+      padding: 0;
+      border-radius: 0;
+      overflow: visible;
+      display: grid;
+      grid-template-rows: 150px auto;
+      row-gap: 8px;
+      justify-content: stretch;
+    }
+    .service-card:hover,
+    .service-card:focus-within { transform: none; box-shadow: none; }
+
+    .service-card__media {
+      position: relative;
+      inset: auto;
+      z-index: 0;
+      grid-area: 1 / 1;
+      border-radius: var(--radius-card-mobile);
+      overflow: hidden;
+    }
+    .service-card::after {
+      position: relative;
+      inset: auto;
+      z-index: 1;
+      grid-area: 1 / 1;
+      border-radius: var(--radius-card-mobile);
+    }
+    .service-card__title {
+      grid-area: 1 / 1;
+      align-self: end;
+      z-index: 2;
+      padding: 0 10px 10px;
+      font-size: 12px;
+      line-height: 1.25;
+      margin-bottom: 0;
+      max-width: 100%;
+    }
+    .service-card__footer {
+      position: static;
+      grid-area: 2 / 1;
+      z-index: 2;
+      gap: 6px;
+      margin: 0;
+      width: 100%;
+      padding: 0;
+      background: transparent;
+      border-radius: 0;
+    }
+    .service-card__footer::before,
+    .service-card__footer::after { display: none; }
+    .service-card__chip {
+      flex: 1 1 auto;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .service-card__arrow { position: relative; width: 26px; height: 26px; flex-shrink: 0; }
+    .service-card__arrow svg { width: 10px; height: 10px; }
+    /* Увеличенная зона нажатия (≥44px) без изменения внешнего вида */
+    .service-card__arrow::before { content: ""; position: absolute; inset: -9px; }
+    .service-card__title { font-size: 13px; }
+
+    /* 16px в полях — иначе iOS Safari приближает страницу при фокусе */
+    .booking-form__input { height: 44px; font-size: 16px; }
+    .booking-form__label { font-size: 12px; }
+    .booking-form__consent-text { font-size: 12px; }
+
+    /* Панель записи — как в макете: срезанные углы слева сверху и справа снизу */
+    .booking__panel {
+      border-radius: 28px;
+      grid-template-columns: 1fr;
+      clip-path: polygon(44px 0, 100% 0, 100% calc(100% - 44px), calc(100% - 44px) 100%, 0 100%, 0 44px);
+    }
+    .booking__panel::before { display: none; }
+    .booking__content { order: 1; padding: 40px 24px 8px; gap: 16px; }
+    .booking__visual { order: 2; min-height: 230px; }
+    .booking__visual img {
+      height: 100%;
+      width: 80%;
+      left: auto;
+      right: 0;
+      object-position: top center;
+      -webkit-mask-image: none;
+              mask-image: none;
+    }
+    .booking__text { color: var(--color-paragraph-light); }
+    .booking__heading { font-size: var(--fs-h2-booking-mobile); max-width: 100%; }
+    .booking__text { font-size: var(--fs-small); max-width: 100%; }
+
+    .booking-form { gap: 20px; }
+    .booking-form__fields { flex-direction: column; align-items: stretch; gap: 12px; }
+    .booking-form__field { width: 100%; }
+    .booking-form__label { font-size: var(--fs-xs); }
+    .booking-form__submit { width: 100%; }
+    .booking-form__submit .button { width: 100%; }
+
+    .footer__inner { flex-direction: column; gap: 32px; padding-block: 36px 24px; }
+    .footer__nav { gap: 28px; }
+  }
+
+  /* =============================================
+     ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ (≤390px)
+     Чтобы карточки не обрезались и паддинги были корректными
+     ============================================= */
+  /* Базовая мобильная ширина макета — 390px (карточка 154px, отступы 20px).
+     Ниже 360px (iPhone SE / узкие Android) слегка уменьшаем карточки и отступы. */
+  @media (max-width: 360px) {
+    :root { --container-padding: 16px; }
+    .service-card {
+      width: 138px;
+      grid-template-rows: 138px auto;
+    }
+    .service-card__chip { padding: 4px 6px; font-size: 10px; }
+    .booking__content { padding: 36px 20px 8px; }
+    .booking__heading { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержимому</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="header__logo" href="#top" aria-label="EUROKAPPA — на главную">
+      <span class="header__logo-mark" aria-hidden="true">EK</span>
+      <span class="header__logo-text">EUROKAPPA</span>
+    </a>
+
+    <nav class="nav" aria-label="Основная навигация">
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="#services" aria-current="page">Услуги</a></li>
+        <li class="nav__item"><a class="nav__link" href="#clinic">О клинике</a></li>
+        <li class="nav__item"><a class="nav__link" href="#doctors">Врачи</a></li>
+        <li class="nav__item"><a class="nav__link" href="#prices">Цены</a></li>
+        <li class="nav__item"><a class="nav__link" href="#booking">Контакты</a></li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__phone" href="tel:+78002000000">8 800 200-00-00</a>
+      <a class="button button--accent header__cta" href="#booking">Записаться</a>
+      <button
+        class="header__burger"
+        type="button"
+        id="burgerButton"
+        aria-expanded="false"
+        aria-controls="navPanel"
+        aria-label="Открыть меню"
+      >
+        <span class="header__burger-box" aria-hidden="true">
+          <span class="header__burger-line"></span>
+          <span class="header__burger-line"></span>
+          <span class="header__burger-line"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="header__backdrop" id="navBackdrop" hidden></div>
+  <div class="header__nav-panel" id="navPanel">
+    <nav class="nav" aria-label="Мобильная навигация">
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="#services">Услуги</a></li>
+        <li class="nav__item"><a class="nav__link" href="#clinic">О клинике</a></li>
+        <li class="nav__item"><a class="nav__link" href="#doctors">Врачи</a></li>
+        <li class="nav__item"><a class="nav__link" href="#prices">Цены</a></li>
+        <li class="nav__item"><a class="nav__link" href="#booking">Контакты</a></li>
+      </ul>
+    </nav>
+    <a class="header__phone" href="tel:+78002000000">8 800 200-00-00</a>
+    <a class="button button--accent header__cta" href="#booking">Записаться на приём</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section services" id="services" aria-labelledby="servicesTitle">
+    <div class="container">
+      <h2 class="services__title" id="servicesTitle">Услуги</h2>
+    </div>
+
+    <ul class="services__track" role="list" aria-label="Список услуг клиники">
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/eliners.jpg" alt="Пациентке примеряют прозрачный элайнер EUROKAPPA в кабинете врача" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Элайнеры</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по элайнерам">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/implantation.png" alt="Модель зубного импланта с коронкой" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Имплантация</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по имплантации">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/braces.jpg" alt="Девушка с брекет-системой широко улыбается" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Брекеты</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по брекетам">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/therapy.png" alt="Стоматологический инструмент для терапевтического лечения зубов" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Терапия</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по терапии">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/hygiene.png" alt="Набор для профессиональной гигиены полости рта" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Гигиена полости рта</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по гигиене полости рта">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/surgery.png" alt="Хирургический стоматологический инструмент крупным планом" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Хирургия</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по хирургии">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/gnathology.jpg" alt="Иллюстрация строения челюсти для гнатологического обследования" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Гнатология</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по гнатологии">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/prosthetics.png" alt="Зубная коронка для протезирования на светлом фоне" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Протезирование</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по протезированию">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+
+      <li>
+        <article class="service-card">
+          <div class="service-card__media">
+            <img src="img/aestetic.jpg" alt="Красивая здоровая улыбка после эстетической стоматологии" loading="lazy">
+          </div>
+          <h3 class="service-card__title">Эстетическая стоматология</h3>
+          <div class="service-card__footer">
+            <span class="service-card__chip">Консультация</span>
+            <a class="service-card__arrow" href="#booking" aria-label="Записаться на консультацию по эстетической стоматологии">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section booking" id="booking" aria-labelledby="bookingTitle">
+    <div class="container">
+      <div class="booking__panel">
+        <!-- Vector 25 из Figma (контур панели + градиент) и Ellipse 20 (свечение), обрезанное по контуру -->
+        <div class="booking__bg" aria-hidden="true">
+          <svg viewBox="0 0 1199 323" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <defs>
+              <path id="bookingShape" d="M1145.3 14.6296L1184.34 53.6346C1193.73 63.0127 1199 75.7368 1199 89.005V293C1199 309.569 1185.57 323 1169 323H127.378C114.125 323 101.413 317.738 92.0378 308.37L52.9996 269.365C43.6136 259.987 38.34 247.263 38.34 233.995V182.378C38.34 169.117 33.0721 156.4 23.6953 147.023L14.6447 137.972C5.26782 128.595 0 115.878 0 102.617V30C0 13.4315 13.4315 0 30 0H1109.96C1123.22 0 1135.93 5.26202 1145.3 14.6296Z"/>
+              <radialGradient id="bookingGrad" cx="0" cy="0" r="1" gradientTransform="matrix(-278.05 278.834 551.64 253.613 814.833 44.1661)" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#233A5A"/>
+                <stop offset="1" stop-color="#3C6AB9"/>
+              </radialGradient>
+              <clipPath id="bookingClip"><use href="#bookingShape"/></clipPath>
+              <filter id="bookingBlur" x="-200%" y="-200%" width="500%" height="500%">
+                <feGaussianBlur stdDeviation="100"/>
+              </filter>
+            </defs>
+            <use href="#bookingShape" fill="url(#bookingGrad)"/>
+            <g clip-path="url(#bookingClip)">
+              <circle cx="215" cy="285.5" r="133.5" fill="#fff" filter="url(#bookingBlur)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="booking__visual">
+          <img src="img/booking.png" alt="Пациентка клиники держит кейс для хранения элайнеров EUROKAPPA и улыбается" loading="lazy" onerror="this.style.display='none'">
+        </div>
+
+        <div class="booking__content">
+          <h2 class="booking__heading" id="bookingTitle">Запишитесь на бесплатную консультацию прямо сейчас!</h2>
+          <p class="booking__text">Хотите узнать подробнее? Наши специалисты ответят на все ваши вопросы и помогут выбрать оптимальный путь к здоровой и красивой улыбке.</p>
+
+          <form class="booking-form" id="bookingForm" novalidate>
+            <div class="booking-form__fields">
+              <div class="booking-form__field" id="fioField">
+                <label class="booking-form__label" for="fioInput">Введите ФИО</label>
+                <input
+                  class="booking-form__input"
+                  type="text"
+                  id="fioInput"
+                  name="fio"
+                  placeholder="ФИО"
+                  autocomplete="name"
+                  required
+                  aria-describedby="fioError"
+                >
+                <span class="booking-form__error" id="fioError" role="alert">Укажите имя и фамилию (только буквы)</span>
+              </div>
+
+              <div class="booking-form__field" id="phoneField">
+                <label class="booking-form__label" for="phoneInput">Введите номер телефона</label>
+                <input
+                  class="booking-form__input"
+                  type="tel"
+                  id="phoneInput"
+                  name="phone"
+                  placeholder="+7..."
+                  inputmode="tel"
+                  autocomplete="tel"
+                  required
+                  aria-describedby="phoneError"
+                >
+                <span class="booking-form__error" id="phoneError" role="alert">Введите номер в формате +7 XXX XXX-XX-XX</span>
+              </div>
+
+              <div class="booking-form__submit">
+                <button class="button button--accent" type="submit">Записаться на прием</button>
+              </div>
+            </div>
+
+            <label class="booking-form__consent" for="consentInput">
+              <input class="booking-form__checkbox" type="checkbox" id="consentInput" name="consent" required aria-describedby="consentError">
+              <span class="booking-form__consent-text">я даю свое согласие на <a href="#privacy">обработку персональных данных</a></span>
+            </label>
+            <span class="booking-form__error" id="consentError" role="alert">Нужно согласие на обработку данных</span>
+
+            <p class="booking-form__success" id="bookingSuccess" role="status" aria-live="polite">
+              <span>Спасибо! Заявка принята — мы перезвоним в течение 15 минут.</span>
+              <button class="booking-form__reset" type="button" id="bookingReset">Отправить ещё</button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer" id="clinic">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <div class="footer__logo">
+        <span class="header__logo-mark" aria-hidden="true">EK</span>
+        EUROKAPPA
+      </div>
+      <p class="footer__tagline">Сеть стоматологических клиник полного цикла: от профилактики до сложной имплантации и ортодонтии.</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Навигация в подвале сайта">
+      <div>
+        <p class="footer__nav-title">Клиника</p>
+        <ul class="footer__nav-list">
+          <li><a class="footer__nav-link" href="#services">Услуги</a></li>
+          <li><a class="footer__nav-link" href="#doctors">Врачи</a></li>
+          <li><a class="footer__nav-link" href="#prices">Цены</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__nav-title">Информация</p>
+        <ul class="footer__nav-list">
+          <li><a class="footer__nav-link" href="#privacy">Персональные данные</a></li>
+          <li><a class="footer__nav-link" href="#booking">Контакты</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="container footer__bottom">
+    <span>© 2026 EUROKAPPA. Все права защищены.</span>
+    <a class="footer__nav-link" href="tel:+78002000000">8 800 200-00-00</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var burgerButton = document.getElementById("burgerButton");
+  var navPanel = document.getElementById("navPanel");
+  var navBackdrop = document.getElementById("navBackdrop");
+
+  function openNav() {
+    burgerButton.setAttribute("aria-expanded", "true");
+    burgerButton.setAttribute("aria-label", "Закрыть меню");
+    navPanel.classList.add("is-open");
+    navBackdrop.hidden = false;
+    requestAnimationFrame(function () { navBackdrop.classList.add("is-open"); });
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeNav() {
+    burgerButton.setAttribute("aria-expanded", "false");
+    burgerButton.setAttribute("aria-label", "Открыть меню");
+    navPanel.classList.remove("is-open");
+    navBackdrop.classList.remove("is-open");
+    document.body.style.overflow = "";
+    setTimeout(function () { navBackdrop.hidden = true; }, 320);
+  }
+
+  burgerButton.addEventListener("click", function () {
+    var isOpen = burgerButton.getAttribute("aria-expanded") === "true";
+    isOpen ? closeNav() : openNav();
+  });
+
+  navBackdrop.addEventListener("click", closeNav);
+
+  navPanel.querySelectorAll(".nav__link, .header__cta").forEach(function (el) {
+    el.addEventListener("click", closeNav);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && burgerButton.getAttribute("aria-expanded") === "true") {
+      closeNav();
+      burgerButton.focus();
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1024 && burgerButton.getAttribute("aria-expanded") === "true") {
+      closeNav();
+    }
+  });
+
+  var form = document.getElementById("bookingForm");
+  var fioInput = document.getElementById("fioInput");
+  var phoneInput = document.getElementById("phoneInput");
+  var consentInput = document.getElementById("consentInput");
+  var fioField = document.getElementById("fioField");
+  var phoneField = document.getElementById("phoneField");
+  var consentError = document.getElementById("consentError");
+  var successMessage = document.getElementById("bookingSuccess");
+
+  var NAME_PATTERN = /^[A-Za-zА-Яа-яЁё\-\s]{2,80}$/;
+
+  function formatPhone(value) {
+    var digits = value.replace(/\D/g, "");
+    if (digits.startsWith("8")) digits = "7" + digits.slice(1);
+    if (!digits.startsWith("7")) digits = "7" + digits;
+    digits = digits.slice(0, 11);
+
+    var rest = digits.slice(1);
+    var out = "+7";
+    if (rest.length > 0) out += " " + rest.slice(0, 3);
+    if (rest.length >= 4) out += " " + rest.slice(3, 6);
+    if (rest.length >= 7) out += "-" + rest.slice(6, 8);
+    if (rest.length >= 9) out += "-" + rest.slice(8, 10);
+    return out;
+  }
+
+  phoneInput.addEventListener("input", function (e) {
+    var cursorWasAtEnd = e.target.selectionEnd === e.target.value.length;
+    e.target.value = e.target.value ? formatPhone(e.target.value) : "";
+    if (cursorWasAtEnd) {
+      e.target.selectionStart = e.target.selectionEnd = e.target.value.length;
+    }
+  });
+
+  function isValidPhone(value) {
+    var digits = value.replace(/\D/g, "");
+    return digits.length === 11 && digits.startsWith("7");
+  }
+
+  function setFieldInvalid(field, input, invalid) {
+    field.classList.toggle("booking-form__field--invalid", invalid);
+    input.setAttribute("aria-invalid", invalid ? "true" : "false");
+  }
+
+  function validateFio(showError) {
+    var value = fioInput.value.trim();
+    var valid = NAME_PATTERN.test(value) && value.split(/\s+/).length >= 2;
+    if (showError) setFieldInvalid(fioField, fioInput, !valid);
+    return valid;
+  }
+
+  function validatePhone(showError) {
+    var valid = isValidPhone(phoneInput.value);
+    if (showError) setFieldInvalid(phoneField, phoneInput, !valid);
+    return valid;
+  }
+
+  function validateConsent(showError) {
+    var valid = consentInput.checked;
+    if (showError) {
+      consentInput.setAttribute("aria-invalid", valid ? "false" : "true");
+      consentError.style.display = valid ? "none" : "block";
+    }
+    return valid;
+  }
+
+  fioInput.addEventListener("blur", function () { validateFio(true); });
+  phoneInput.addEventListener("blur", function () { validatePhone(true); });
+  consentInput.addEventListener("change", function () { validateConsent(true); });
+
+  fioInput.addEventListener("input", function () {
+    if (fioField.classList.contains("booking-form__field--invalid")) validateFio(true);
+  });
+  phoneInput.addEventListener("input", function () {
+    if (phoneField.classList.contains("booking-form__field--invalid")) validatePhone(true);
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var fioOk = validateFio(true);
+    var phoneOk = validatePhone(true);
+    var consentOk = validateConsent(true);
+
+    if (!fioOk) { fioInput.focus(); return; }
+    if (!phoneOk) { phoneInput.focus(); return; }
+    if (!consentOk) { consentInput.focus(); return; }
+
+    // Демо-отправка: имитируем запрос, без реального бэкенда/CRM
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var originalLabel = submitBtn.textContent;
+    form.classList.add("is-loading");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Отправляем…";
+
+    setTimeout(function () {
+      form.classList.remove("is-loading");
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+      form.classList.add("is-sent");
+      successMessage.classList.add("is-visible");
+      form.reset();
+      setFieldInvalid(fioField, fioInput, false);
+      setFieldInvalid(phoneField, phoneInput, false);
+      consentError.style.display = "none";
+      consentInput.removeAttribute("aria-invalid");
+    }, 900);
+  });
+
+  document.getElementById("bookingReset").addEventListener("click", function () {
+    form.classList.remove("is-sent");
+    successMessage.classList.remove("is-visible");
+    fioInput.focus();
+  });
+})();
+</script>
+</body>
+</html>
